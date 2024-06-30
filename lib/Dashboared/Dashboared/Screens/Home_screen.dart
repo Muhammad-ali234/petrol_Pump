@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myproject/Dashboared/Notification/notification_Screen.dart';
 import 'package:myproject/Dashboared/Pump%20Card%20Dahsboared/petrol_pump.dart';
 import 'package:myproject/Dashboared/Barchart/barchart_screen.dart';
 import 'package:myproject/Dashboared/services/service.dart';
 import 'package:myproject/Dashboared/sidebar.dart';
 import 'package:myproject/Dashboared/services/dashbord_service.dart';
+import 'package:badges/badges.dart' as badges;
 
 class DashboardOwnerScreen extends StatefulWidget {
   const DashboardOwnerScreen({super.key});
@@ -23,6 +24,94 @@ class _DashboardOwnerScreenState extends State<DashboardOwnerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+      //   actions: [
+      //     Padding(
+      //       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      //       child: StreamBuilder(
+      //         stream: FirebaseFirestore.instance
+      //             .collection('notifications')
+      //             .snapshots(),
+      //         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      //           if (!snapshot.hasData) return const CircularProgressIndicator();
+
+      //           int unseenCount =
+      //               snapshot.data!.docs.where((doc) => !doc['seen']).length;
+
+      //           return badges.Badge(
+      //             showBadge: unseenCount > 0,
+      //             badgeContent: Text(unseenCount.toString()),
+      //             child: IconButton(
+      //               icon: const Icon(Icons.notifications),
+      //               onPressed: () {
+                    
+      //                 showDialog(
+      //                   context: context,
+      //                   builder: (context) {
+      //                     return const AlertDialog(
+      //                       contentPadding: EdgeInsets.zero,
+      //                       content: NotificationScreen(),
+      //                     );
+      //                   },
+      //                 );
+      //               },
+      //             ),
+      //           );
+      //         },
+      //       ),
+      //     )
+      //   ],
+      //   backgroundColor: Colors.teal,
+      //   iconTheme: const IconThemeData(color: Colors.white),
+      //   title: const Text(
+      //     'Dashboard',
+      //     style: TextStyle(color: Colors.white),
+      //   ),
+      //   centerTitle: true,
+      //   leading: MediaQuery.of(context).size.width < 600
+      //       ? Builder(
+      //           builder: (BuildContext context) {
+      //             return IconButton(
+      //               icon: const Icon(Icons.menu, color: Colors.white),
+      //               onPressed: () {
+      //                 Scaffold.of(context).openDrawer();
+      //               },
+      //             );
+      //           },
+      //         )
+      //       : null,
+      // ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('notifications')
+                  .snapshots(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) return const CircularProgressIndicator();
+
+                int unseenCount =
+                    snapshot.data!.docs.where((doc) => !doc['seen']).length;
+
+                return badges.Badge(
+                  showBadge: unseenCount > 0,
+                  badgeContent: Text(unseenCount.toString()),
+                  child: IconButton(
+                    icon: const Icon(Icons.notifications),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const NotificationScreen();
+                        },
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
+          )
+        ],
         backgroundColor: Colors.teal,
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(

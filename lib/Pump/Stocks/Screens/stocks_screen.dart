@@ -84,6 +84,8 @@ class _StocksScreenState extends State<StocksScreen> {
           duration: const Duration(seconds: 2),
         ),
       );
+      await _firestoreService.addStockAndSendNotification(
+          category: selectedFuelType, stockAdded: litres);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

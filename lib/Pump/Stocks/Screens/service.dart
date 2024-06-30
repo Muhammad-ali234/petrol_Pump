@@ -261,6 +261,40 @@ class FirestoreService {
       return null;
     }
   }
+
+  Future<void> addStockAndSendNotification({
+    required String category,
+    required double stockAdded,
+  }) async {
+    try {
+      String? uid = await getCurrentUserUID();
+      if (uid == null) {
+        throw Exception('User UID is null');
+      }
+
+      DocumentSnapshot pumpSnapshot = await _firestore
+          .collection('users')
+          .doc('Pump')
+          .collection('Pump')
+          .doc(uid)
+          .get();
+
+      if (pumpSnapshot.exists) {
+        String pumpName = pumpSnapshot['name'];
+        await FirebaseFirestore.instance.collection('notifications').add({
+          'pumpName': pumpName,
+          'stockCategory': category,
+          'stockAdded': stockAdded,
+          'timestamp': FieldValue.serverTimestamp(),
+          'seen': false,
+        });
+      } else {
+        throw Exception('Pump document does not exist');
+      }
+    } catch (e) {
+      throw Exception('Failed to add stock and send notification: $e');
+    }
+  }
 }
 
 class FirebaseAuthService {
